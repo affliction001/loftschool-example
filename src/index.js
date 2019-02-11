@@ -123,46 +123,22 @@ function calculator(number = 0) {
 
     return {
         'sum': function() {
-            let totalSum = number;
-
-            for (let i = 0; i < arguments.length; i++) {
-                totalSum += arguments[i];
-            }
-
-            return totalSum;
+            return Array.prototype.slice.call(arguments).reduce((prev, current) => prev + current, number);
         },
         'dif': function() {
-            let totalDif = number;
-
-            for (let i = 0; i < arguments.length; i++) {
-                totalDif -= arguments[i];
-            }
-
-            return totalDif;
+            return Array.prototype.slice.call(arguments).reduce((prev, current) => prev - current, number);
         },
         'div': function() {
-            const args = arguments.length === 1 ? [arguments[0]] : new Array(...arguments);
-
-            let totalDiv = number;
+            const args = Array.prototype.slice.call(arguments);
 
             if (args.some(num => num === 0)) {
                 throw new Error('division by 0');
-            } else {
-                for (let i = 0; i < arguments.length; i++) {
-                    totalDiv /= arguments[i];
-                }
             }
 
-            return totalDiv;
+            return args.reduce((prev, current) => prev / current, number);
         },
         'mul': function() {
-            let totalMul = number;
-
-            for (let i = 0; i < arguments.length; i++) {
-                totalMul *= arguments[i];
-            }
-
-            return totalMul;
+            return Array.prototype.slice.call(arguments).reduce((prev, current) => prev * current, number);
         }
     };
 }
