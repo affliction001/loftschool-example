@@ -90,7 +90,7 @@ function returnBadArguments(fn) {
         for (let i = 1; i < arguments.length; i++) {
             try {
                 fn.call(null, arguments[i]);
-            } catch(exeption) {
+            } catch (exeption) {
                 badArgs.push(arguments[i]);
             }
         }
