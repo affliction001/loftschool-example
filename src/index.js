@@ -116,14 +116,14 @@ function returnBadArguments(fn) {
    - number не является числом (с текстом "number is not a number")
    - какой-либо из аргументов div является нулем (с текстом "division by 0")
  */
-function calculator(number) {
+function calculator(number = 0) {
     if ((typeof number !== 'number' || isNaN(number)) && number !== undefined) {
         throw new Error('number is not a number');
     }
 
     return {
         'sum': function() {
-            let totalSum = number || 0;
+            let totalSum = number;
 
             for (let i = 0; i < arguments.length; i++) {
                 totalSum += arguments[i];
@@ -132,7 +132,7 @@ function calculator(number) {
             return totalSum;
         },
         'dif': function() {
-            let totalDif = number || 0;
+            let totalDif = number;
 
             for (let i = 0; i < arguments.length; i++) {
                 totalDif -= arguments[i];
@@ -143,20 +143,20 @@ function calculator(number) {
         'div': function() {
             const args = arguments.length === 1 ? [arguments[0]] : new Array(...arguments);
 
+            let totalDiv = number;
+
             if (args.some(num => num === 0)) {
                 throw new Error('division by 0');
-            }
-
-            let totalDiv = number || 0;
-
-            for (let i = 0; i < arguments.length; i++) {
-                totalDiv /= arguments[i];
+            } else {
+                for (let i = 0; i < arguments.length; i++) {
+                    totalDiv /= arguments[i];
+                }
             }
 
             return totalDiv;
         },
         'mul': function() {
-            let totalMul = number || 0;
+            let totalMul = number;
 
             for (let i = 0; i < arguments.length; i++) {
                 totalMul *= arguments[i];
