@@ -157,68 +157,72 @@ function deleteTextNodesRecursive(where) {
  */
 function collectDOMStat(root) {
     function getTexts(parent) {
-		let textsCount = 0;
+        let textsCount = 0;
 
-		for (let child of parent.childNodes) {
-			if (child.nodeName === '#text') {
-				textsCount++;
-			}
+        for (let child of parent.childNodes) {
+            if (child.nodeName === '#text') {
+                textsCount++;
+            }
 
-			if (child.childNodes) {
-				textsCount += getTexts(child);
-			}
-		}
+            if (child.childNodes) {
+                textsCount += getTexts(child);
+            }
+        }
 
-		return textsCount;
-	}
+        return textsCount;
+    }
 
-	function getClasses(parent) {
-		const classes = {};
-		const childs = new Array(...parent.children);
+    function getClasses(parent) {
+        const classes = {};
+        const childs = new Array(...parent.children);
 
-		childs.forEach(child => {
-			const list = child.classList;
+        childs.forEach(child => {
+            const list = child.classList;
 
-			for (let i = 0; i < list.length; i++) {
-				classes[list[i]] ? classes[list[i]] = ++classes[list[i]] : classes[list[i]] = 1;
-			}
+            for (let i = 0; i < list.length; i++) {
+                classes[list[i]] ? classes[list[i]] = ++classes[list[i]] : classes[list[i]] = 1;
+            }
 
-			if (child.children.length > 0) {
-				const childList = getClasses(child);
+            if (child.children.length > 0) {
+                const childList = getClasses(child);
 
-				for (let key in childList) {
-					classes[key] ? classes[key] += childList[key] : classes[key] = childList[key];
-				}
-			}
-		});
+                for (let key in childList) {
+                    if (childList.hasOwnProperty(key)) {
+                        classes[key] ? classes[key] += childList[key] : classes[key] = childList[key];
+                    }
+                }
+            }
+        });
 
-		return classes;
-	}
+        return classes;
+    }
 
-	function getTags(parent) {
-		const tags = {};
-		const childs = new Array(...parent.children);
+    function getTags(parent) {
+        const tags = {};
+        const childs = new Array(...parent.children);
 
-		childs.forEach(child => {
-			tags[child.tagName] ? tags[child.tagName] = ++tags[child.tagName] : tags[child.tagName] = 1;
+        childs.forEach(child => {
+            tags[child.tagName] ? tags[child.tagName] = ++tags[child.tagName] : tags[child.tagName] = 1;
 
-			if (child.children.length > 0) {
-				const childTags = getTags(child);
+            if (child.children.length > 0) {
+                const childTags = getTags(child);
 
-				for (let key in childTags) {
-					tags[key] ? tags[key] += childTags[key] : tags[key] = childTags[key];
-				}
-			}
-		});
+                for (let key in childTags) {
+                    if (childTags.hasOwnProperty(key)) {
+                        tags[key] ? tags[key] += childTags[key] : tags[key] = childTags[key];
+                    }
+                }
+            }
+        });
 
-		return tags;
-	}
+        return tags;
+    }
 
-	return {
-		tags: getTags(root),
-		classes: getClasses(root),
-		texts: getTexts(root)
-	}
+    return {
+        tags: getTags(root),
+        classes: getClasses(root),
+        texts: getTexts(root)
+    }
 }
 
 /*
@@ -254,6 +258,33 @@ function collectDOMStat(root) {
    }
  */
 function observeChildNodes(where, fn) {
+    var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.addedNodes.length > 0) {
+                const added = [];
+
+                for (let i = 0; i < mutation.addedNodes.length; i++) {
+                    added.push(mutation.addedNodes[i]);
+                }
+
+                fn.call(null, { type: 'insert', nodes: added });
+            }
+
+            if (mutation.removedNodes.length > 0) {
+                const removed = [];
+
+                for (let i = 0; i < mutation.removedNodes.length; i++) {
+                    removed.push(mutation.removedNodes[i]);
+                }
+
+                fn.call(null, { type: 'remove', nodes: removed });
+            }
+        });
+    });
+
+    var config = { childList: true, subtree: true };
+
+    observer.observe(where, config);
 }
 
 export {
