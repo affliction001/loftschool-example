@@ -12,7 +12,9 @@
  */
 function createDivWithText(text) {
     const divElement = document.createElement('div');
+
     divElement.textContent = text;
+
     return divElement;
 }
 
@@ -50,10 +52,10 @@ function prepend(what, where) {
 function findAllPSiblings(where) {
     return Array.prototype.slice.call(where.children).filter(elem => {
         if (elem.nextElementSibling !== null) {
-    		if (elem.nextElementSibling.tagName === 'P') {
-    			return elem;
-    		}
-    	}
+            if (elem.nextElementSibling.tagName === 'P') {
+                return elem;
+            }
+        }
     });
 }
 
@@ -154,6 +156,69 @@ function deleteTextNodesRecursive(where) {
    }
  */
 function collectDOMStat(root) {
+    function getTexts(parent) {
+		let textsCount = 0;
+
+		for (let child of parent.childNodes) {
+			if (child.nodeName === '#text') {
+				textsCount++;
+			}
+
+			if (child.childNodes) {
+				textsCount += getTexts(child);
+			}
+		}
+
+		return textsCount;
+	}
+
+	function getClasses(parent) {
+		const classes = {};
+		const childs = new Array(...parent.children);
+
+		childs.forEach(child => {
+			const list = child.classList;
+
+			for (let i = 0; i < list.length; i++) {
+				classes[list[i]] ? classes[list[i]] = ++classes[list[i]] : classes[list[i]] = 1;
+			}
+
+			if (child.children.length > 0) {
+				const childList = getClasses(child);
+
+				for (let key in childList) {
+					classes[key] ? classes[key] += childList[key] : classes[key] = childList[key];
+				}
+			}
+		});
+
+		return classes;
+	}
+
+	function getTags(parent) {
+		const tags = {};
+		const childs = new Array(...parent.children);
+
+		childs.forEach(child => {
+			tags[child.tagName] ? tags[child.tagName] = ++tags[child.tagName] : tags[child.tagName] = 1;
+
+			if (child.children.length > 0) {
+				const childTags = getTags(child);
+
+				for (let key in childTags) {
+					tags[key] ? tags[key] += childTags[key] : tags[key] = childTags[key];
+				}
+			}
+		});
+
+		return tags;
+	}
+
+	return {
+		tags: getTags(root),
+		classes: getClasses(root),
+		texts: getTexts(root)
+	}
 }
 
 /*
