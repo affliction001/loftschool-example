@@ -30,7 +30,7 @@ function createDiv() {
     const element = document.createElement('div');
 
     element.classList.add('draggable-div');
-    element.style = 'background-color: #555; top: 100px; left: 100px; width: 200px; height: 200px;';
+    element.style = 'background-color: #555; position: absolute; top: 100px; left: 100px; width: 200px; height: 200px;';
 
     return element;
 }
