@@ -27,7 +27,7 @@ const homeworkContainer = document.querySelector('#homework-container');
    homeworkContainer.appendChild(newDiv);
  */
 function createDiv() {
-    const element = document.createElement('div');
+    /*const element = document.createElement('div');
 
     element.classList.add('draggable-div');
     element.style.width = '100px';
@@ -37,7 +37,7 @@ function createDiv() {
     element.style.left = '150px';
     element.style = 'background-color: #555';
 
-    return element;
+    return element;*/
 }
 
 /*
