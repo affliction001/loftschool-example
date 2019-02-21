@@ -30,7 +30,7 @@ function createDiv() {
     const element = document.createElement('div');
 
     element.classList.add('draggable-div');
-    element.style = 'background-color: #555; position: absolute; top: 100px; left: 100px; width: 200px; height: 200px;';
+    element.style = 'background-color: #555; position: absolute; top: 100px; left: 100px; width: 100px; height: 100px;';
 
     return element;
 }
@@ -44,6 +44,38 @@ function createDiv() {
    addListeners(newDiv);
  */
 function addListeners(target) {
+    const container = document.querySelector('#homework-container');
+    let currentBox = null;
+    let shiftX = 0;
+    let shiftY = 0;
+    const originalColor = target.style.backgroundColor;
+    const overColor = '#f00';
+
+    target.setAttribute('draggable', 'true');
+
+    document.addEventListener('dragstart', event => {
+        currentBox = event.target;
+        shiftX = event.clientX - currentBox.getBoundingClientRect().left;
+        shiftY = event.clientY - currentBox.getBoundingClientRect().top;
+    });
+
+    document.addEventListener('dragover', event => {
+        if (event.target.classList.contains('draggable-div')) {
+            event.target.style.backgroundColor = overColor;
+        }
+    });
+
+    document.addEventListener('dragleave', event => {
+        if (event.target.classList.contains('draggable-div')) {
+            event.target.style.backgroundColor = originalColor;
+        }
+    });
+
+    document.addEventListener('dragend', event => {
+        currentBox.style.display = 'block';
+        currentBox.style.top = event.clientY - shiftY + 'px';
+        currentBox.style.left = event.clientX - shiftX + 'px';
+    });
 }
 
 let addDivButton = homeworkContainer.querySelector('#addDiv');
