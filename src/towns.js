@@ -66,7 +66,7 @@ function loadTowns() {
  */
 function isMatching(full, chunk) {
     if (full.toLowerCase().indexOf(chunk.toLowerCase()) !== -1) {
-      return true;
+        return true;
     }
 
     return false;
@@ -107,7 +107,7 @@ getTowns();
 retryBtn.addEventListener('click', () => {
     filterBlock.style = 'display: none';
     loadingBlock.style = 'display: block';
-    loadingBlock.innerHTML = `Загрузка...`;
+    loadingBlock.innerHTML = 'Загрузка...';
     retryBtn.style.display = 'none';
 
     getTowns();
@@ -116,6 +116,7 @@ retryBtn.addEventListener('click', () => {
 filterInput.addEventListener('keyup', function() {
     // это обработчик нажатия кливиш в текстовом поле
     const value = filterInput.value;
+    
     filterResult.innerHTML = '';
 
     if (value === '') {
