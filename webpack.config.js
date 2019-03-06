@@ -16,11 +16,10 @@ rules.push({
 
 module.exports = {
     entry: {
-        main: './src/index.js',
-        towns: './src/towns.js'
+        main: './src/cookie.js'
     },
     devServer: {
-        index: 'towns.html'
+        index: 'cookie.html'
     },
     output: {
         filename: '[name].[hash].js',
@@ -51,10 +50,10 @@ module.exports = {
             chunks: ['main']
         }),
         new HtmlPlugin({
-            title: 'Load towns',
-            template: './src/towns.hbs',
-            filename: 'towns.html',
-            chunks: ['towns']
+            title: 'Cookie filter',
+            template: './src/cookie.hbs',
+            filename: 'cookie.html',
+            chunks: ['cookie']
         }),
         new CleanWebpackPlugin(['dist'])
     ]
