@@ -49,8 +49,6 @@ filterNameInput.addEventListener('keyup', function() {
 
 addButton.addEventListener('click', () => {
     setCookie(addNameInput.value, addValueInput.value, {expires: 5000000000});
-    addNameInput.value = '';
-    addValueInput.value = '';
     displayCookies();
 });
 

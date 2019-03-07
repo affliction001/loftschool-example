@@ -51,7 +51,7 @@ module.exports = {
         }),
         new HtmlPlugin({
             title: 'Cookie filter',
-            template: './src/cookie.hbs',
+            template: 'cookie.hbs',
             filename: 'cookie.html',
             chunks: ['cookie']
         }),
