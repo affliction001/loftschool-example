@@ -122,7 +122,7 @@ function displayCookies() {
     let rows = '';
 
     for (let key in cookies) {
-        if (isMatching(key, filterNameInput.value)) {
+        if (isMatching(key, filterNameInput.value) || isMatching(cookies[key], filterNameInput.value)) {
             rows += `<tr><td>${key}</td><td>${cookies[key]}</td><td>${btn}</td></tr>`;
         }
     }
