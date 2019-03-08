@@ -48,7 +48,7 @@ filterNameInput.addEventListener('keyup', function() {
 });
 
 addButton.addEventListener('click', () => {
-    setCookie(addNameInput.value, addValueInput.value, {expires: 5000000000});
+    setCookie(addNameInput.value, addValueInput.value, { expires: 5000000000 });
     displayCookies();
 });
 
@@ -59,13 +59,13 @@ document.addEventListener('click', e => {
     }
 });
 
-function getCookie(name) {
-    var matches = document.cookie.match(new RegExp(
-        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-    ));
+// function getCookie(name) {
+//     var matches = document.cookie.match(new RegExp(
+//         "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+//     ));
 
-    return matches ? decodeURIComponent(matches[1]) : undefined;
-}
+//     return matches ? decodeURIComponent(matches[1]) : undefined;
+// }
 
 function getCookies() {
     return document.cookie
@@ -84,8 +84,9 @@ function setCookie(name, value, options) {
 
     var expires = options.expires;
 
-    if (typeof expires == "number" && expires) {
+    if (typeof expires == 'number' && expires) {
         var d = new Date();
+        
         d.setTime(d.getTime() + expires * 1000);
         expires = options.expires = d;
     }
@@ -95,13 +96,17 @@ function setCookie(name, value, options) {
 
     value = encodeURIComponent(value);
 
-    var updatedCookie = name + "=" + value;
+    var updatedCookie = name + '=' + value;
 
     for (var propName in options) {
-        updatedCookie += "; " + propName;
-        var propValue = options[propName];
-        if (propValue !== true) {
-            updatedCookie += "=" + propValue;
+        if (options.hasOwnProperty(propName)) {
+            updatedCookie += '; ' + propName;
+            
+            var propValue = options[propName];
+            
+            if (propValue !== true) {
+                updatedCookie += '=' + propValue;
+            }
         }
     }
 
@@ -109,7 +114,7 @@ function setCookie(name, value, options) {
 }
 
 function deleteCookie(name) {
-    setCookie(name, "", {
+    setCookie(name, '', {
         expires: -1
     })
 }
